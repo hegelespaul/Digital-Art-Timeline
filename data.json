@@ -1242,18 +1242,19 @@
     ]
   },
   {
-    "id": "alife",
-    "title": "aLife",
+    "id": "unfolding-object",
+    "title": "Unfolding Object",
     "artist": "John F. Simon Jr.",
-    "year": "2001",
+    "year": "2002",
     "location": "USA",
-    "image": "https://bit.ly/4thWnHh",
-    "link": "http://numeral.art/artworks/artAppliances/2001_2004/alife.php",
-    "media_type": "software artwork",
-    "description": "A generative software system simulating evolving artificial organisms. The software relies on real-time simulation to create compositions that constantly change and don't repeat for billions of years.",
+    "image": "https://www.guggenheim.org/wp-content/uploads/2002/01/2002.16_ph_web-1.jpg",
+    "link": "https://www.guggenheim.org/video/john-f-simon-jr-interacts-with-unfolding-object",
+    "media_type": "software art",
+    "description": "A generative software artwork in which a continuously evolving geometric form unfolds algorithmically in real time, emphasizing process, variability, and computational aesthetics.",
     "tags": [
+      "software",
       "simulation",
-      "interactive"
+      "digital image"
     ]
   },
   {
