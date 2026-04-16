@@ -1,0 +1,391 @@
+── Reset & base ──────────────────────────────────────────────────────────── *,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 16px;
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: 'Inter', 'Helvetica Neue', Arial, sans-serif;
+  background-color: #151515;
+  color: #e8e6e0;
+  line-height: 1.7;
+  overflow-x: hidden;
+}
+
+/* ── Intro section ─────────────────────────────────────────────────────────── */
+#intro {
+  padding: 3px 40px 3px;
+  max-width: 800px;
+  border-bottom: 0.5px solid #2a2a2a;
+}
+
+#intro h1 {
+  font-size: clamp(2rem, 5vw, 3.2rem);
+  font-weight: 300;
+  letter-spacing: -0.03em;
+  line-height: 1.15;
+  color: #f5f2ec;
+  margin-bottom: 18px;
+}
+
+#intro h1 span {
+  color: #7F77DD;
+}
+
+#intro p {
+  font-size: 1.05rem;
+  color: #aaa;
+  font-weight: 400;
+  max-width: 800px;
+  line-height: 1.7;
+}
+
+/* ── Timeline container ────────────────────────────────────────────────────── */
+#timeline-container {
+  padding: 0;
+  background: #0d0d0d;
+}
+
+/* ── Filter bar ────────────────────────────────────────────────────────────── */
+#tl-filter-bar {
+  display: flex !important;
+  align-items: center;
+  gap: 12px;
+  padding: 20px 40px !important;
+  background: #0d0d0d;
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  border-bottom: 0.5px solid #222;
+}
+
+#tl-search {
+  background: #1c1c1c !important;
+  border: 0.5px solid #383838 !important;
+  border-radius: 8px !important;
+  color: #ffffff !important;
+  font-size: 14px !important;
+  padding: 9px 14px !important;
+  width: 250px !important;
+  outline: none !important;
+  transition: border-color 0.15s;
+  font-family: inherit;
+}
+
+#tl-search::placeholder {
+  color: #bdbaba !important;
+}
+
+#tl-search:focus {
+  border-color: #7F77DD !important;
+}
+
+#tl-count {
+  font-size: 13px !important;
+  color: #bdbaba !important;
+  letter-spacing: 0.02em;
+}
+
+/* ── Legend ────────────────────────────────────────────────────────────────── */
+#tl-legend {
+  display: flex !important;
+  flex-wrap: wrap;
+  gap: 6px 10px;
+  padding: 14px 40px 16px !important;
+  background: #0d0d0d;
+  border-bottom: 0.5px solid #1e1e1e;
+}
+
+.tl-legend-item {
+  display: flex !important;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px !important;
+  color: #bdbaba !important;
+  cursor: pointer;
+  transition: color 0.15s, opacity 0.15s;
+  padding: 4px 10px;
+  border-radius: 20px;
+  border: 0.5px solid transparent;
+  font-family: inherit;
+  letter-spacing: 0.01em;
+}
+
+.tl-legend-item:hover {
+  color: #ccc !important;
+  border-color: #2e2e2e;
+}
+
+.tl-legend-dot {
+  width: 8px !important;
+  height: 8px !important;
+  border-radius: 50% !important;
+  flex-shrink: 0;
+}
+
+/* ── Scroll wrapper ────────────────────────────────────────────────────────── */
+#tl-wrap {
+  width: 100%;
+  height: 950px;
+  cursor: grab;
+  user-select: none;
+  padding: 32px 0 24px !important;
+  background: #1a1a1a;
+  scrollbar-width: thin;
+  scrollbar-color: #2a2a2a transparent;
+  overflow-x: auto;
+  overflow-y: auto;
+}
+
+#tl-wrap:active {
+  cursor: grabbing;
+}
+
+#tl-wrap::-webkit-scrollbar {
+  height: 4px;
+}
+
+#tl-wrap::-webkit-scrollbar-thumb {
+  background: #2a2a2a;
+  border-radius: 2px;
+}
+
+
+/* ── SVG axis ──────────────────────────────────────────────────────────────── */
+.tl-axis-line {
+  stroke: #303030 !important;
+  stroke-width: 1 !important;
+}
+
+.tl-year-tick {
+  stroke: #282828 !important;
+  stroke-width: 0.5 !important;
+}
+
+.tl-decade-tick {
+  stroke: #444 !important;
+  stroke-width: 1.2 !important;
+}
+
+.tl-year-label {
+  fill: #7f7f7f !important;
+  font-size: 11px !important;
+  font-family: 'Inter', sans-serif !important;
+}
+
+.tl-decade-label {
+  fill: #aaa !important;
+  font-size: 13px !important;
+  font-weight: 600 !important;
+  font-family: 'Inter', sans-serif !important;
+}
+
+/* ── Cards ─────────────────────────────────────────────────────────────────── */
+.tl-card {
+  width: 140px !important;
+  height: 175px !important;
+  background: #111 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border-radius: 10px !important;
+  border-width: 02px !important;
+  border-style: solid !important;
+  overflow: hidden;
+  display: flex !important;
+  flex-direction: column !important;
+  cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.15s ease !important;
+  font-family: 'Inter', sans-serif;
+  pointer-events: all;
+}
+
+.tl-card:hover {
+  transform: translateY(-3px) !important;
+  box-shadow: 0 10px 32px rgba(0, 0, 0, 0.6) !important;
+}
+
+.tl-card-img {
+  width: 100% !important;
+  height: 120px !important;
+  object-fit: cover !important;
+  display: block !important;
+  flex-shrink: 0 !important;
+}
+
+.tl-card-placeholder {
+  width: 100% !important;
+  height: 80px !important;
+  flex-shrink: 0 !important;
+}
+
+.tl-card-body {
+  padding: 7px 8px 5px !important;
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 2px !important;
+  overflow: hidden;
+}
+
+.tl-card-title {
+  font-size: 11px !important;
+  font-weight: 600 !important;
+  line-height: 1.3 !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+}
+
+.tl-card-artist {
+  font-size: 12px !important;
+  color: #999 !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+}
+
+.tl-card-year {
+  font-size: 11px !important;
+  color: #bdbaba !important;
+  font-variant-numeric: tabular-nums;
+}
+
+.tl-card-tags {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  gap: 2px !important;
+  margin-top: 4px !important;
+}
+
+.tl-card-tag {
+  font-size: 9px !important;
+  padding: 2px 5px !important;
+  border-radius: 8px !important;
+  white-space: nowrap !important;
+}
+
+/* ── Tooltip ───────────────────────────────────────────────────────────────── */
+#tl-tooltip {
+  position: fixed !important;
+  background: #181818 !important;
+  border: 0.5px solid #2e2e2e !important;
+  border-radius: 12px !important;
+  padding: 14px 16px !important;
+  max-width: 280px !important;
+  pointer-events: none !important;
+  opacity: 0 !important;
+  transition: opacity 0.12s !important;
+  z-index: 9999 !important;
+  font-family: 'Inter', sans-serif;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.6) !important;
+}
+
+#tl-tooltip.tl-visible {
+  opacity: 1 !important;
+}
+
+.tl-tt-img {
+  width: 100% !important;
+  height: 120px !important;
+  object-fit: cover !important;
+  border-radius: 8px !important;
+  display: block !important;
+  margin-bottom: 10px !important;
+}
+
+.tl-tt-title {
+  font-size: 15px !important;
+  font-weight: 600 !important;
+  color: #f0ede6 !important;
+  margin-bottom: 5px !important;
+  line-height: 1.3;
+}
+
+.tl-tt-meta {
+  font-size: 12px !important;
+  color: #888 !important;
+  margin-bottom: 3px !important;
+  line-height: 1.4;
+}
+
+.tl-tt-desc {
+  font-size: 13px !important;
+  color: #aaa !important;
+  margin: 8px 0 !important;
+  line-height: 1.6;
+}
+
+.tl-tt-tags {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  gap: 4px !important;
+  margin-top: 8px !important;
+}
+
+.tl-tt-tag {
+  font-size: 11px !important;
+  padding: 3px 9px !important;
+  border-radius: 10px !important;
+}
+
+footer {
+  text-align: center;
+  padding: 0.3rem;
+  font-size: 0.75rem;
+  color: #888;
+}
+
+#tl-svg {
+  pointer-events: none;
+}
+
+.tl-annotation-text {
+  font-size: 10px;
+  fill: #666;
+  pointer-events: none;
+}
+
+html {
+  zoom: 0.89;
+}
+
+#loader {
+  position: fixed;
+  inset: 0;
+  background: #111;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  color: white;
+  font-family: sans-serif;
+}
+
+.spinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid rgba(255, 255, 255, 0.2);
+  border-top: 3px solid white;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-bottom: 12px;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+#loader.hidden {
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.4s ease;
+}
