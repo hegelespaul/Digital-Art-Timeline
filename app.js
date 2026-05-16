@@ -5,22 +5,30 @@ fetch("data.json")
   .then(async json => {
     data = json;
     renderTimeline();
-    // small delay = smoother UX (optional)
-    setTimeout(async () => {
-      await waitForImages();
-      document.getElementById("loader").classList.add("hidden");
-    }, 300);
+
+    // Give DOM time to add images, then wait for them
+    await new Promise(resolve => setTimeout(resolve, 100));
+    await waitForImages();
+
+    document.getElementById("loader").classList.add("hidden");
   })
   .catch(err => console.error("Could not load data.json:", err));
 
-  function waitForImages() {
+function waitForImages() {
   const imgs = document.querySelectorAll("img");
-  return Promise.all([...imgs].map(img => {
-    if (img.complete) return Promise.resolve();
-    return new Promise(res => {
-      img.onload = img.onerror = res;
+  const promises = [...imgs].map(img => {
+    if (img.complete) {
+      // Check if image loaded successfully or failed
+      return img.naturalHeight !== 0 ? Promise.resolve() : Promise.reject();
+    }
+    return new Promise((resolve, reject) => {
+      img.onload = resolve;
+      img.onerror = reject; // Handle failed images
     });
-  }));
+  });
+
+  // Use allSettled to wait for all images (even if some fail)
+  return Promise.allSettled(promises);
 }
 
 function renderTimeline() {
@@ -62,7 +70,7 @@ function renderTimeline() {
   const START_YEAR = 1960;
   const END_YEAR = new Date().getFullYear();
   const PX_PER_YEAR = 80;
-  const SVG_H = 1400;
+  const SVG_H = 1800;
   const AXIS_Y = SVG_H / 2;
   const CARD_W = 140;
   const CARD_H = 175;
