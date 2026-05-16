@@ -396,3 +396,21 @@ html {
   pointer-events: none;
   transition: opacity 0.4s ease;
 }
+
+/* In fullscreen, hide filter bar and legend for more space (optional) */
+:fullscreen #tl-filter-bar,
+:fullscreen #tl-legend,
+:-webkit-full-screen #tl-filter-bar,
+:-webkit-full-screen #tl-legend,
+:-moz-full-screen #tl-filter-bar,
+:-moz-full-screen #tl-legend {
+  display: none;
+}
+
+/* Make wrap take full space in fullscreen */
+:fullscreen #tl-wrap,
+:-webkit-full-screen #tl-wrap,
+:-moz-full-screen #tl-wrap {
+  width: 100vw !important;
+  height: 100vh !important;
+}

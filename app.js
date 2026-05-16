@@ -170,26 +170,37 @@ function renderTimeline() {
     }
   }
 
-  // ── Tooltip helpers ──────────────────────────────────────────────────────────
-  function showTooltip(event, d) {
-    const imgHtml = d.image
-      ? `<img class="tl-tt-img" src="${d.image}" alt="${d.title}">`
+  function showTooltip(event, d, existingImg) {
+
+    const imgHtml = existingImg
+      ? `<img class="tl-tt-img"
+            src="${existingImg.src}"
+            alt="${d.title}"
+            loading="lazy"
+            decoding="async">`
       : "";
+
     const tagsHtml = (d.tags || []).map(t =>
-      `<span class="tl-tt-tag" style="background:${colorForTag(t)}18;color:${colorForTag(t)};border:0.5px solid ${colorForTag(t)}55">${t}</span>`
+      `<span class="tl-tt-tag"
+      style="background:${colorForTag(t)}18;
+             color:${colorForTag(t)};
+             border:0.5px solid ${colorForTag(t)}55">
+      ${t}
+    </span>`
     ).join("");
 
     tooltip.innerHTML = `
-      ${imgHtml}
-      <div class="tl-tt-title">${d.title}</div>
-      <div class="tl-tt-meta">${[d.artist, d._year, d.location].filter(Boolean).join(" · ")}</div>
-      ${d.media_type ? `<div class="tl-tt-meta">${d.media_type}</div>` : ""}
-      ${d.description ? `<div class="tl-tt-desc">${d.description}</div>` : ""}
-      <div class="tl-tt-tags">${tagsHtml}</div>
-    `;
+    ${imgHtml}
+    <div class="tl-tt-title">${d.title}</div>
+    <div class="tl-tt-meta">
+      ${[d.artist, d._year, d.location].filter(Boolean).join(" · ")}
+    </div>
+    ${d.media_type ? `<div class="tl-tt-meta">${d.media_type}</div>` : ""}
+    ${d.description ? `<div class="tl-tt-desc">${d.description}</div>` : ""}
+    <div class="tl-tt-tags">${tagsHtml}</div>
+  `;
 
-    // Store link and update cursor
-    tooltip._link = null; // click handled by card directly
+    tooltip._link = null;
     tooltip.style.cursor = "default";
 
     tooltip.classList.add("tl-visible");
@@ -200,8 +211,8 @@ function renderTimeline() {
     const tw = 270, th = 270;
     let left = event.clientX + 18;
     let top = event.clientY - 20;
-    if (left + tw > window.innerWidth) left = event.clientX - tw - 18;
-    if (top + th > window.innerHeight) top = window.innerHeight - th - 8;
+    // if (left + tw > window.innerWidth) left = event.clientX - tw - 18;
+    // if (top + th > window.innerHeight) top = window.innerHeight - th - 8;
     tooltip.style.left = left + "px";
     tooltip.style.top = top + "px";
   }
@@ -234,7 +245,10 @@ function renderTimeline() {
         .attr("class", "tl-card")
         .style("border-color", color)
         .style("cursor", d.link ? "pointer" : "default")
-        .on("mouseover", e => showTooltip(e, d))
+        .on("mouseover", function (e) {
+          const existingImg = this.querySelector("img");
+          showTooltip(e, d, existingImg);
+        })
         .on("mousemove", moveTooltip)
         .on("mouseout", hideTooltip)
         .on("click", () => { if (d.link) window.open(d.link, "_blank"); });
@@ -640,3 +654,82 @@ function renderTimeline() {
   }, 50);
 }
 
+// Add this after the renderTimeline() function definition
+
+function handleFullscreenChange() {
+  const wrap = document.getElementById("tl-wrap");
+  const svg = d3.select("#tl-svg");
+  
+  if (document.fullscreenElement || 
+      document.webkitFullscreenElement || 
+      document.mozFullScreenElement || 
+      document.msFullscreenElement) {
+    // Entered fullscreen
+    wrap.style.width = '';
+    wrap.style.height = '78vh';
+    
+    // Recalculate scroll position to keep current view centered
+    const currentCenterX = wrap.scrollLeft + wrap.clientWidth / 2;
+    const currentCenterY = wrap.scrollTop + wrap.clientHeight / 2;
+    
+    setTimeout(() => {
+      wrap.scrollLeft = currentCenterX - wrap.clientWidth / 2;
+      wrap.scrollTop = currentCenterY - wrap.clientHeight / 2;
+    }, 100);
+  } else {
+    // Exited fullscreen
+    wrap.style.width = '';
+    wrap.style.height = '';
+    
+    // Recalculate scroll position
+    const currentCenterX = wrap.scrollLeft + wrap.clientWidth / 2;
+    const currentCenterY = wrap.scrollTop + wrap.clientHeight / 2;
+    
+    setTimeout(() => {
+      wrap.scrollLeft = currentCenterX - wrap.clientWidth / 2;
+      wrap.scrollTop = currentCenterY - wrap.clientHeight / 2;
+    }, 100);
+  }
+}
+
+// Add event listeners for fullscreen changes
+document.addEventListener('fullscreenchange', handleFullscreenChange);
+document.addEventListener('webkitfullscreenchange', handleFullscreenChange);
+document.addEventListener('mozfullscreenchange', handleFullscreenChange);
+document.addEventListener('MSFullscreenChange', handleFullscreenChange);
+
+// Optional: Add F11 key listener to toggle fullscreen programmatically
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'F11') {
+    e.preventDefault();
+    
+    const elem = document.documentElement;
+    
+    if (!document.fullscreenElement && 
+        !document.webkitFullscreenElement && 
+        !document.mozFullScreenElement && 
+        !document.msFullscreenElement) {
+      // Enter fullscreen
+      if (elem.requestFullscreen) {
+        elem.requestFullscreen();
+      } else if (elem.webkitRequestFullscreen) {
+        elem.webkitRequestFullscreen();
+      } else if (elem.mozRequestFullScreen) {
+        elem.mozRequestFullScreen();
+      } else if (elem.msRequestFullscreen) {
+        elem.msRequestFullscreen();
+      }
+    } else {
+      // Exit fullscreen
+      if (document.exitFullscreen) {
+        document.exitFullscreen();
+      } else if (document.webkitExitFullscreen) {
+        document.webkitExitFullscreen();
+      } else if (document.mozCancelFullScreen) {
+        document.mozCancelFullScreen();
+      } else if (document.msExitFullscreen) {
+        document.msExitFullscreen();
+      }
+    }
+  }
+});
