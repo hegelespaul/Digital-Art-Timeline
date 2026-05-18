@@ -106,6 +106,35 @@ function renderTimeline() {
     return m ? parseInt(m[0], 10) : null;
   }
 
+
+  let zoom = 1;
+  const BASE_WIDTH = TOTAL_W;
+
+  wrap.addEventListener("wheel", (e) => {
+
+    // if (!e.ctrlKey) return;
+
+    e.preventDefault();
+
+    const oldZoom = zoom;
+
+    zoom *= e.deltaY > 0 ? 0.9 : 1.1;
+
+    zoom = Math.max(0.65, Math.min(zoom, 5));
+
+    // mouse position ratio inside viewport
+    const mouseX = e.clientX - wrap.getBoundingClientRect().left;
+    const ratioX = (wrap.scrollLeft + mouseX) / (BASE_WIDTH * oldZoom);
+
+    // REAL width change
+    svgEl.style.width = `${BASE_WIDTH * zoom}px`;
+
+    // preserve zoom focus point
+    wrap.scrollLeft =
+      ratioX * (BASE_WIDTH * zoom) - mouseX;
+
+  }, { passive: false });
+
   // ── Prepare data ─────────────────────────────────────────────────────────────
   const items = data
     .map(d => ({ ...d, _year: parseYear(d) }))
@@ -659,19 +688,19 @@ function renderTimeline() {
 function handleFullscreenChange() {
   const wrap = document.getElementById("tl-wrap");
   const svg = d3.select("#tl-svg");
-  
-  if (document.fullscreenElement || 
-      document.webkitFullscreenElement || 
-      document.mozFullScreenElement || 
-      document.msFullscreenElement) {
+
+  if (document.fullscreenElement ||
+    document.webkitFullscreenElement ||
+    document.mozFullScreenElement ||
+    document.msFullscreenElement) {
     // Entered fullscreen
     wrap.style.width = '';
     wrap.style.height = '78vh';
-    
+
     // Recalculate scroll position to keep current view centered
     const currentCenterX = wrap.scrollLeft + wrap.clientWidth / 2;
     const currentCenterY = wrap.scrollTop + wrap.clientHeight / 2;
-    
+
     setTimeout(() => {
       wrap.scrollLeft = currentCenterX - wrap.clientWidth / 2;
       wrap.scrollTop = currentCenterY - wrap.clientHeight / 2;
@@ -680,11 +709,11 @@ function handleFullscreenChange() {
     // Exited fullscreen
     wrap.style.width = '';
     wrap.style.height = '';
-    
+
     // Recalculate scroll position
     const currentCenterX = wrap.scrollLeft + wrap.clientWidth / 2;
     const currentCenterY = wrap.scrollTop + wrap.clientHeight / 2;
-    
+
     setTimeout(() => {
       wrap.scrollLeft = currentCenterX - wrap.clientWidth / 2;
       wrap.scrollTop = currentCenterY - wrap.clientHeight / 2;
@@ -699,16 +728,16 @@ document.addEventListener('mozfullscreenchange', handleFullscreenChange);
 document.addEventListener('MSFullscreenChange', handleFullscreenChange);
 
 // Optional: Add F11 key listener to toggle fullscreen programmatically
-document.addEventListener('keydown', function(e) {
+document.addEventListener('keydown', function (e) {
   if (e.key === 'F11') {
     e.preventDefault();
-    
+
     const elem = document.documentElement;
-    
-    if (!document.fullscreenElement && 
-        !document.webkitFullscreenElement && 
-        !document.mozFullScreenElement && 
-        !document.msFullscreenElement) {
+
+    if (!document.fullscreenElement &&
+      !document.webkitFullscreenElement &&
+      !document.mozFullScreenElement &&
+      !document.msFullscreenElement) {
       // Enter fullscreen
       if (elem.requestFullscreen) {
         elem.requestFullscreen();
