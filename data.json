@@ -2162,5 +2162,33 @@
     "location": "Miami, Estados Unidos",
     "image": "images/moisesdsanabria-babyagi_ewquhe.jpg",
     "link": "https://www.moises.tech/art/baby_agi"
-  }
+  },
+  {
+    "id": "AutoConstrucción",
+    "media_type": "audiovisual concert",
+    "description": "It is an audiovisual concert performed through live coding, using video game animations and algorithmic music in real time. This work seeks to create stories through live coding.",
+    "tags": [
+      "videogame, performance"
+    ],
+    "title": "AUTOConstrucción",
+    "artist": "Ivan Abreu, CNDSD",
+    "year": "2022",
+    "location": " Países Bajos, Utrecht ",
+    "image": "images/autoconstruccion.jpg",
+    "link": "https://lumenprize.org/2023-winners/2023-gold-award-winner"
+  },
+  {
+    "id": "FURBOT",
+    "media_type": "audiovisual concert",
+    "description": "This audiovisual work uses AI-generated imagery and modified Furby toys to create music, exploring childhood nostalgia, unattainable toys, and how today’s children often prefer tablets over toys.",
+    "tags": [
+      "installation, performance, IA"
+    ],
+    "title": "Furbot",
+    "artist": "CNDSD",
+    "year": "2024",
+    "location": "Colombia, Bogota",
+    "image": "images/furbot.jpg",
+    "link": "https://www.cndsd.xyz/artwork/furbot"
+  } 
 ]
